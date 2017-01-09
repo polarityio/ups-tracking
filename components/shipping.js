@@ -1,0 +1,2 @@
+polarity.export = PolarityComponent.extend({
+});

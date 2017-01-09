@@ -1,0 +1,13 @@
+{
+  "main": "./integration.js",
+  "name": "UPS",
+  "description": "Integration to find your UPS packages",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "request": "^2.75",
+    "lodash": "^4.16",
+    "async": "^2.0",
+    "shipping-ups": "^0.5.7"
+  }
+}

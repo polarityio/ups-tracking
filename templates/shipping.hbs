@@ -1,0 +1,24 @@
+<div class="weight">
+{{#if block.data.details.weight}}
+    <i class="fa fa-fw fa-archive"></i><span class="weights"> Weight: </span>
+    {{block.data.details.weight}}
+{{/if}}
+</div>
+
+<div class="location">
+{{#if block.data.details.location}}
+    <i class="fa fa-fw fa-globe"></i><span class="locations"> Current Location: </span>
+    {{block.data.details.location}}
+{{/if}}
+</div>
+
+<div class="date">
+{{#if block.data.details.date}}
+    <i class="fa fa-fw fa-clock-o"></i><span class="dates"> Last Scan Date: </span>
+    {{moment-time block.data.details.date}}
+{{/if}}
+</div>
+s
+
+
+
