@@ -18,16 +18,17 @@ function doLookup(entities, options, cb) {
     let lookupResults = [];
 
     async.each(entities, function (entityObj, next) {
-        if (entityObj) {
+        if (entityObj.type === 'custom') {
             _lookupEntity(entityObj, options, function (err, result) {
                 if (err) {
                     next(err);
                 } else {
-                    lookupResults.push(result); log.debug("Printing out the Results %j", result);
+                    lookupResults.push(result); log.trace({result: result}, "results");
                     next(null);
                 }
             });
         } else {
+            lookupResults.push({entity: entityObj, data: null}); //Cache the missed results
             next(null);
         }
     }, function (err) {
@@ -35,41 +36,58 @@ function doLookup(entities, options, cb) {
     });
 }
 
+function validateOptions(userOptions, cb) {
+    let errors = [];
+    if(typeof userOptions.license.value !== 'string' ||
+        (typeof userOptions.license.value === 'string' && userOptions.license.value.length === 0)){
+        errors.push({
+            key: 'license',
+            message: 'You must provide a valid UPS API License'
+        })
+    }
 
+    if(typeof userOptions.username.value !== 'string' ||
+        (typeof userOptions.username.value === 'string' && userOptions.username.value.length === 0)){
+        errors.push({
+            key: 'username',
+            message: 'You must provide your UPS account UserID'
+        })
+    }
+
+    if(typeof userOptions.password.value !== 'string' ||
+        (typeof userOptions.password.value === 'string' && userOptions.password.value.length === 0)){
+        errors.push({
+            key: 'password',
+            message: 'You must provide your UPS account Password'
+        })
+    }
+
+    cb(null, errors);
+}
 
 
 function _lookupEntity(entityObj, options, cb) {
 
-    var ups = new upsApi({
+    let ups = new upsApi({
         environment: 'live',
-        username: options.userid,
+        username: options.username,
         password: options.password,
         access_key: options.license,
         pretty: true});
     log.debug("checking UPS pass %j", ups);
     log.debug("Printing out the entityobj %j", entityObj);
 
-    /*ups.track('1ZV5E9420444964064', function(err, results){
-        if(err){
-            console.log(err);
-        }
-        else{
-            console.log(results);
-        }
-    });*/
+
     ups.track(entityObj.value, options = {latest:true},
         function (err, response) {
         // check for an error
         if (err) {
             cb(err);
-            log.debug("checking to see if there is an error %j", err);
             return;
         }
-
-       // if (response.statusCode !== 200) {
-         //   cb(body);
-           // return;
-        //}
+        
+        log.trace({body: response}, "Returned Data:")
+            
         // The lookup results returned is an array of lookup objects with the following format
         cb(null, {
             // Required: This is the entity object passed into the integration doLookup method
@@ -85,7 +103,7 @@ function _lookupEntity(entityObj, options, cb) {
                 // Data that you want to pass back to the notification window details block
                 details: {
                 weight: [response.Shipment.Package.PackageWeight.Weight + " LBS"],
-                location: [response.Shipment.ShipTo.Address.City + ", " + response.Shipment.ShipTo.Address.StateProvinceCode + " " + response.Shipment.ShipTo.Address.PostalCode],
+                location: [response.Shipment.Package.Activity.ActivityLocation.Address.City + ", " + response.Shipment.Package.Activity.ActivityLocation.Address.StateProvinceCode + " " + response.Shipment.Package.Activity.ActivityLocation.Address.PostalCode],
                 date: response.Shipment.Package.Activity.Date + response.Shipment.Package.Activity.Time
                 }}
         });
@@ -93,12 +111,42 @@ function _lookupEntity(entityObj, options, cb) {
 }
 
 
+// function that takes the ErrorObject and passes the error message to the notification window
+var _createJsonErrorPayload = function (msg, pointer, httpCode, code, title, meta) {
+    return {
+        errors: [
+            _createJsonErrorObject(msg, pointer, httpCode, code, title, meta)
+        ]
+    }
+};
 
+// function that creates the Json object to be passed to the payload
+var _createJsonErrorObject = function (msg, pointer, httpCode, code, title, meta) {
+    let error = {
+        detail: msg,
+        status: httpCode.toString(),
+        title: title,
+        code: 'SP_' + code.toString()
+    };
+
+    if (pointer) {
+        error.source = {
+            pointer: pointer
+        };
+    }
+
+    if (meta) {
+        error.meta = meta;
+    }
+
+    return error;
+};
 
 
 module.exports = {
     startup:startup,
-    doLookup: doLookup
+    doLookup: doLookup,
+    validateOptions: validateOptions
 };
 
 

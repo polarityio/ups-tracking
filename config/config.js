@@ -2,6 +2,14 @@ module.exports = {
     "name": "UPS Shipping",
     "acronym": 'UPS',
     "logging": { level: 'debug'},
+    "customTypes":[
+        {
+            "key": 'upsShippingNumber',
+            "regex": /(1Z?[0-9A-Z]{3}?[0-9A-Z]{3}?[0-9A-Z]{2}?[0-9A-Z]{4}?[0-9A-Z]{3}?[0-9A-Z]|[\dT]\d\d\d?\d\d\d\d?\d\d\d)/,
+            "isCaseSensitive": true,
+            "isGlobal": true
+        }
+    ],
    "styles": [
         "./styles/shipping.less"
     ],
@@ -16,21 +24,21 @@ module.exports = {
     "options":[
         {
             "key"          : "license",
-            "name"         : "License Number",
-            "description"  : "License Number issued by UPS",
+            "name"         : "Access Key ",
+            "description"  : "Access Key issued by UPS",
             "default"      : "",
             "type"         : "text",
-            "user-can-edit" : true,
-            "admin-only"    : false
+            "userCanEdit" : true,
+            "adminOnly"    : false
         },
         {
-            "key"          : "userid",
+            "key"          : "username",
             "name"         : "UserID",
             "description"  : "UserID provided when logging into UPS",
             "default"      : "",
             "type"         : "text",
-            "user-can-edit" : true,
-            "admin-only"    : false
+            "userCanEdit" : true,
+            "adminOnly"    : false
         },
         {
             "key"          : "password",
@@ -38,8 +46,8 @@ module.exports = {
             "description"  : "Password used to authenticate to UPS",
             "default"      : "",
             "type"         : "password",
-            "user-can-edit" : true,
-            "admin-only"    : false
+            "userCanEdit" : true,
+            "adminOnly"    : false
         }
     ]
 };
