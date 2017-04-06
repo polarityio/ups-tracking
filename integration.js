@@ -74,8 +74,8 @@ function _lookupEntity(entityObj, options, cb) {
         password: options.password,
         access_key: options.license,
         pretty: true});
-    log.debug("checking UPS pass %j", ups);
-    log.debug("Printing out the entityobj %j", entityObj);
+
+    log.trace({entityObj: entityObj}, "Printing entity Object");
 
 
     ups.track(entityObj.value, options = {latest:true},
@@ -87,7 +87,7 @@ function _lookupEntity(entityObj, options, cb) {
         }
         
         log.trace({body: response}, "Returned Data:")
-            
+
         // The lookup results returned is an array of lookup objects with the following format
         cb(null, {
             // Required: This is the entity object passed into the integration doLookup method

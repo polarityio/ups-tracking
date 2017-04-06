@@ -1,7 +1,7 @@
 module.exports = {
     "name": "UPS Shipping",
     "acronym": 'UPS',
-    "logging": { level: 'debug'},
+    "logging": { level: 'trace'},
     "customTypes":[
         {
             "key": 'upsShippingNumber',
