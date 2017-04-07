@@ -82,7 +82,7 @@ function _lookupEntity(entityObj, options, cb) {
         function (err, response) {
         // check for an error
         if (err) {
-            cb(err);
+            log.trace({err:err}, "Logging any errors that might occur");
             return;
         }
         
