@@ -2,6 +2,9 @@
 {{#if block.data.details.weight}}
     <i class="fa fa-fw fa-archive"></i><span class="weights"> Weight: </span>
     {{block.data.details.weight}}
+        {{#if block.isCached}}
+        <i>(Entity is Cached)</i>
+        {{/if}}
 {{/if}}
 </div>
 
@@ -18,7 +21,7 @@
     {{moment-time block.data.details.date}}
 {{/if}}
 </div>
-s
+
 
 
 
