@@ -1,10 +1,10 @@
 'use strict';
 
-var request = require('async');
-var _ = require('lodash');
-var async = require('async');
-var upsApi = require('shipping-ups');
-var log;
+let request = require('async');
+let _ = require('lodash');
+let async = require('async');
+let upsApi = require('shipping-ups');
+let log;
 
 
 
@@ -82,11 +82,20 @@ function _lookupEntity(entityObj, options, cb) {
         function (err, response) {
         // check for an error
         if (err) {
-            log.trace({err:err}, "Logging any errors that might occur");
+            cb(err);
+            log.error({err:err}, "Logging any errors that might occur");
             return;
         }
         
-        log.trace({body: response}, "Returned Data:")
+        log.trace({body: response}, "Returned Data:");
+
+        //caching blank results
+        if(body.response == null){
+            cb(null, {
+                entity: entityObj.value,
+                data: null
+            });
+        }
 
         // The lookup results returned is an array of lookup objects with the following format
         cb(null, {
@@ -126,7 +135,7 @@ var _createJsonErrorObject = function (msg, pointer, httpCode, code, title, meta
         detail: msg,
         status: httpCode.toString(),
         title: title,
-        code: 'SP_' + code.toString()
+        code: 'UPS_' + code.toString()
     };
 
     if (pointer) {
