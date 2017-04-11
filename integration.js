@@ -82,7 +82,6 @@ function _lookupEntity(entityObj, options, cb) {
         function (err, response) {
         // check for an error
         if (err) {
-            cb(err);
             log.error({err:err}, "Logging any errors that might occur");
             return;
         }
@@ -90,9 +89,9 @@ function _lookupEntity(entityObj, options, cb) {
         log.trace({body: response}, "Returned Data:");
 
         //caching blank results
-        if(body.response == null){
+        if(response.Shipment == null){
             cb(null, {
-                entity: entityObj.value,
+                entity: entityObj,
                 data: null
             });
         }
