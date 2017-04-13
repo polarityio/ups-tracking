@@ -2,7 +2,6 @@
 
 The Polarity UPS integration allows Polarity to search UPS for the tracking number of your package.
 
-![image](https://cloud.githubusercontent.com/assets/22529325/24931040/b4cf3dbc-1ed9-11e7-97d0-2ff9d5332fb0.png)
 
 ![image](https://cloud.githubusercontent.com/assets/22529325/24931471/67f26bde-1edb-11e7-8a3d-8674a39e2583.png)
 		
