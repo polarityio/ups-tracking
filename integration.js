@@ -82,6 +82,10 @@ function _lookupEntity(entityObj, options, cb) {
         function (err, response) {
         // check for an error
         if (err) {
+            cb(null, {
+                entity: entityObj,
+                data: null
+            });
             log.error({err:err}, "Logging any errors that might occur");
             return;
         }
