@@ -14,7 +14,6 @@ function startup(logger) {
 }
 
 function doLookup(entities, options, cb) {
-    let entitiesWithNoData = [];
     let lookupResults = [];
 
     async.each(entities, function (entityObj, next) {
@@ -45,37 +44,22 @@ function validateOptions(userOptions, cb) {
             message: 'You must provide a valid UPS API License'
         })
     }
-
-    if(typeof userOptions.username.value !== 'string' ||
-        (typeof userOptions.username.value === 'string' && userOptions.username.value.length === 0)){
-        errors.push({
-            key: 'username',
-            message: 'You must provide your UPS account UserID'
-        })
-    }
-
-    if(typeof userOptions.password.value !== 'string' ||
-        (typeof userOptions.password.value === 'string' && userOptions.password.value.length === 0)){
-        errors.push({
-            key: 'password',
-            message: 'You must provide your UPS account Password'
-        })
-    }
-
     cb(null, errors);
 }
+
 
 
 function _lookupEntity(entityObj, options, cb) {
 
     let ups = new upsApi({
         environment: 'live',
-        username: options.username,
-        password: options.password,
+        username: "username",
+        password: "password",
         access_key: options.license,
         pretty: true});
 
     log.trace({entityObj: entityObj}, "Printing entity Object");
+    log.trace({ups: ups}, "UPS check:");
 
 
     ups.track(entityObj.value, options = {latest:true},
@@ -94,10 +78,8 @@ function _lookupEntity(entityObj, options, cb) {
 
         //caching blank results
         if(response.Shipment == null){
-            cb(null, {
-                entity: entityObj,
-                data: null
-            });
+            cb(err);
+            return;
         }
 
         // The lookup results returned is an array of lookup objects with the following format
@@ -121,38 +103,6 @@ function _lookupEntity(entityObj, options, cb) {
         });
     });
 }
-
-
-// function that takes the ErrorObject and passes the error message to the notification window
-var _createJsonErrorPayload = function (msg, pointer, httpCode, code, title, meta) {
-    return {
-        errors: [
-            _createJsonErrorObject(msg, pointer, httpCode, code, title, meta)
-        ]
-    }
-};
-
-// function that creates the Json object to be passed to the payload
-var _createJsonErrorObject = function (msg, pointer, httpCode, code, title, meta) {
-    let error = {
-        detail: msg,
-        status: httpCode.toString(),
-        title: title,
-        code: 'UPS_' + code.toString()
-    };
-
-    if (pointer) {
-        error.source = {
-            pointer: pointer
-        };
-    }
-
-    if (meta) {
-        error.meta = meta;
-    }
-
-    return error;
-};
 
 
 module.exports = {
