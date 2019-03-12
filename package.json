@@ -2,7 +2,7 @@
   "main": "./integration.js",
   "name": "UPS",
   "description": "Integration to find your UPS packages",
-  "version": "1.1.0-beta",
+  "version": "3.0.0-beta",
   "private": true,
   "dependencies": {
     "request": "^2.75",

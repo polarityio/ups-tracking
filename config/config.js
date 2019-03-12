@@ -1,11 +1,11 @@
 module.exports = {
     "name": "UPS Shipping",
     "acronym": 'UPS',
-    "logging": { level: 'trace'},
+    "logging": { level: 'info'},
     "customTypes":[
         {
             "key": 'upsShippingNumber',
-            "regex": /(1Z?[0-9A-Z]{3}?[0-9A-Z]{3}?[0-9A-Z]{2}?[0-9A-Z]{4}?[0-9A-Z]{3}?[0-9A-Z])/,
+            "regex": /(1Z[0-9A-Z]{3}?[0-9A-Z]{3}?[0-9A-Z]{2}?[0-9A-Z]{4}?[0-9A-Z]{3}?[0-9A-Z])/,
             "isCaseSensitive": true,
             "isGlobal": true
         }
@@ -27,7 +27,7 @@ module.exports = {
             "name"         : "Access Key ",
             "description"  : "Access Key issued by UPS",
             "default"      : "",
-            "type"         : "text",
+            "type"         : "password",
             "userCanEdit" : true,
             "adminOnly"    : false
         }

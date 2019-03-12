@@ -1,27 +1,24 @@
-<div class="weight">
+<div>
+    <span class="p-title">{{fa-icon "info-circle" fixedWidth=true}} UPS Shipping Information</span>
+</div>
+
 {{#if block.data.details.weight}}
-    <i class="fa fa-fw fa-archive"></i><span class="weights"> Weight: </span>
-    {{block.data.details.weight}}
-        {{#if block.isCached}}
-        <i>(Entity is Cached)</i>
-        {{/if}}
+      <div>
+          {{fa-icon "archive"}}<span class="p-key"> Package Weight: </span>
+          <span class="p-value">{{block.data.details.weight}}</span>
+      </div>
 {{/if}}
-</div>
 
-<div class="location">
 {{#if block.data.details.location}}
-    <i class="fa fa-fw fa-globe"></i><span class="locations"> Current Location: </span>
-    {{block.data.details.location}}
+        <div>
+            {{fa-icon "globe"}}<span class="p-key"> Package Current Location: </span>
+            <span class="p-value">{{block.data.details.location}}</span>
+        </div>
 {{/if}}
-</div>
 
-<div class="date">
 {{#if block.data.details.date}}
-    <i class="fa fa-fw fa-clock-o"></i><span class="dates"> Last Scan Date: </span>
-    {{moment-time block.data.details.date}}
+        <div>
+            {{fa-icon "globe"}}<span class="p-key"> Last Scan Date: </span>
+            <span class="p-value">{{block.data.details.date}}</span>
+        </div>
 {{/if}}
-</div>
-
-
-
-
