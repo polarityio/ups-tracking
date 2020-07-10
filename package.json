@@ -8,6 +8,6 @@
     "request": "^2.75",
     "lodash": "^4.16",
     "async": "^2.0",
-    "shipping-ups": "^0.5.7"
+    "shipping-ups": "^1.0.0"
   }
 }
